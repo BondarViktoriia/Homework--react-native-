@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
     color: "#212121",
     fontSize: 30,
     textAlign: "center",
-    marginBottom: 32,
+      marginBottom: 32,
+    fontFamily:'roboto',
    
   },
   formInput: {
