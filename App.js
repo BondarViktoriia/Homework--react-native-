@@ -1,47 +1,58 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,ImageBackground } from 'react-native';
-import LoginScreen from './assets/Screens/LoginScreen';
-import RegistrationForm from './assets/Screens/RegistrationScreen';
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { StyleSheet, View } from "react-native";
 
-const MainStack = createStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
+
+import { useState, useEffect, useCallback } from "react";
+import { useRoute } from "./router";
+
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
+
+
+
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
+  const routing = useRoute({});
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await Font.loadAsync({
+          roboto: require("./assets/fonts/Roboto-Regular.ttf"),
+        });
+      } catch (error) {
+        console.warn(error);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
   return (
     <NavigationContainer>
-          <View style={styles.container}>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require('./assets/images/bgimage.png')}
-        >
-          <MainStack.Navigator>
-            <MainStack.Screen name="RegistrationForm" component={RegistrationForm} />
-           <MainStack.Screen name="LoginScreen" component={LoginScreen} />
-
-          </MainStack.Navigator>
-       
-       <LoginScreen/>
-    
-   </ImageBackground>
-         
-        
-
-    
-    </View>
-</NavigationContainer>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        {routing}
+      </View>
+      
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-
-  },
-    imageBackground: {
-    flex: 1,
-    resizeMode: "cover",
-      justifyContent: "center",
-
+    backgroundColor: "#fff",
   },
 });
