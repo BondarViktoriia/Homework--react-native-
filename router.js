@@ -4,9 +4,9 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 
 import LoginScreen from "./Screens/LoginScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
-import PostsScreen from "./Screens/Home/PostsScreen";
-import CreatePostsScreen from "./Screens/Home/CreatePostsScreen";
-import ProfileScreen from "./Screens/Home/ProfileScreen";
+import PostsScreen from "./Screens/MainScreens/PostsScreen";
+import CreatePostsScreen from "./Screens/MainScreens/CreatePostsScreen";
+import ProfileScreen from "./Screens/MainScreens/ProfileScreen";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";

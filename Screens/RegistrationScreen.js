@@ -9,13 +9,16 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions,
+  // Dimensions,
 
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { authSignUpUser } from "../redux/auth/authOperations";
 
 const initialState = {
-  login: "",
+  nickname: "",
   email: "",
   password: "",
 };
@@ -23,25 +26,27 @@ const initialState = {
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [state, setState] = useState(initialState);
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 20 * 2
-  );
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 20 * 2
+  // );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  const dispath = useDispatch();
+
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 20 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
 
   const keyboardHide = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
-    console.log(state);
+    dispath(authSignUpUser(state))
     setState(initialState);
   };
   const closeKeyboardBackdrop = () => {
@@ -64,19 +69,19 @@ export const RegistrationScreen = ({ navigation }) => {
                 style={{
                   ...styles.formInput,
                   marginBottom: isShowKeyBoard ? 23 : 43,
-                  width: dimensions,
+                  // width: dimensions,
                 }}
               >
                 <Text style={styles.formTitle}>Регистрация</Text>
                 <TextInput
                   style={styles.input}
-                  value={state.login}
+                  value={state.nickname}
                   textAlign={"left"}
                   placeholder={"Логин"}
                   placeholderTextColor={"#BDBDBD"}
                   onFocus={() => setIsShowKeyBoard(true)}
                   onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, login: value }))
+                    setState((prevState) => ({ ...prevState, nickname: value }))
                   }
                 />
                 <TextInput

@@ -13,6 +13,8 @@ import {
 
 } from "react-native";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -27,21 +29,23 @@ export const LoginScreen = ({ navigation }) => {
     Dimensions.get("window").width - 20 * 2
   );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  const dispath = useDispatch();
+
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 20 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
 
   const keyboardHide = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
-    console.log(state);
+    dispath(authSignInUser(state));
     setState(initialState);
   };
   const closeKeyboardBackdrop = () => {
