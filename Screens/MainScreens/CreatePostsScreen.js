@@ -12,6 +12,8 @@ import * as Location from "expo-location";
 import db from "../../firebase/config";
 import { nanoid } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import { Feather } from "@expo/vector-icons";
+
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
@@ -35,15 +37,13 @@ export const CreatePostsScreen = ({ navigation }) => {
   const takePicture = async () => {
     const { uri } = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
-    // console.log("latitude", location.coords.latitude);
-    // console.log("longitude", location.coords.longitude);
-    console.log('comment', comment);
-    console.log('location',location)
     setPhoto(uri);
+
   };
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("DefaultScreen");
+    navigation.navigate("Публикации");
+ 
   };
 
   const uploadPostToServer = async () => {
@@ -79,16 +79,17 @@ export const CreatePostsScreen = ({ navigation }) => {
             />
           </View>
         )}
-        <TouchableOpacity onPress={takePicture}>
-          <Text style={styles.snap}>SNAP</Text>
+        <TouchableOpacity onPress={takePicture} style={styles.photo} >
+         <Feather name="camera" size={32} color="black"  />
         </TouchableOpacity>
+
       </Camera>
       <Text style={styles.downloadText}>Загрузите фото</Text>
       <TextInput
         style={styles.input}
         textAlign={"left"}
         placeholder={"Название..."}
-        placeholderTextColor={"#BDBDBD"}
+        placeholderTextColor={"orange"}
         onChangeText={setComment}
       />
       {/* <Text>{location}</Text> */}
@@ -110,11 +111,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 104,
     alignItems: "center",
+    justifyContent: 'center',
+ 
+ 
   },
-  snap: {
-    marginTop: 150,
-    color: "#ffffff",
-  },
+  photo:{  width: 60,
+    height: 50,
+    backgroundColor: "rgba(200, 195, 196, 0.37)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 50,},
+ 
   downloadText: {
     marginTop: 8,
     marginHorizontal: 16,
@@ -140,7 +147,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   btnText: {
-    color: "#BDBDBD",
+    color: "orange",
     fontSize: 16,
   },
   input: {
@@ -148,12 +155,13 @@ const styles = StyleSheet.create({
     height: 50,
 
     marginHorizontal: 16,
-    borderColor: "#E8E8E8",
+    borderColor: "orange",
     padding: 16,
     paddingLeft: 0,
-    color: "#BDBDBD",
+    color: "black",
     marginTop: 32,
   },
 });
 
 export default CreatePostsScreen;
+

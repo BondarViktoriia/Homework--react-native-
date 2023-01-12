@@ -10,7 +10,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Dimensions,
-
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -22,7 +21,6 @@ const initialState = {
 };
 
 export const LoginScreen = ({ navigation }) => {
-  console.log("navigation", navigation);
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(
@@ -31,16 +29,16 @@ export const LoginScreen = ({ navigation }) => {
 
   const dispath = useDispatch();
 
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 20 * 2;
-  //     setDimensions(width);
-  //   };
-  //   Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    // return () => {
+    //   Dimensions.removeEventListener("change", onChange);
+    // };
+  }, []);
 
   const keyboardHide = () => {
     setIsShowKeyBoard(false);
@@ -54,83 +52,72 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={closeKeyboardBackdrop} style={styles.form}>
+    <TouchableWithoutFeedback onPress={closeKeyboardBackdrop}>
       <ImageBackground
         style={styles.imageBackground}
         source={require("../assets/images/bgimage.png")}
       >
-        <View style={styles.registrationFormContainer}>
-          
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <View
-                style={{
-                  ...styles.formInput,
-                  marginBottom: isShowKeyBoard ? 23 : 43,
-                  width: dimensions,
-                }}
-              >
-                <Text style={styles.formTitle}>Войти</Text>
-                <TextInput
-                  style={styles.input}
-                  value={state.email}
-                  textAlign={"left"}
-                  placeholder={"Адрес электронной почты"}
-                  placeholderTextColor={"#BDBDBD"}
-                  onFocus={() => setIsShowKeyBoard(true)}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, email: value }))
-                  }
-                />
-                <TextInput
-                  style={styles.input}
-                  value={state.password}
-                  textAlign={"left"}
-                  placeholder={"Пароль"}
-                  placeholderTextColor={"#BDBDBD"}
-                  onFocus={() => setIsShowKeyBoard(true)}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, password: value }))
-                  }
-                />
-                            <TouchableOpacity style={styles.button} onPress={keyboardHide}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View
+            style={{
+              ...styles.formInput,
+              paddingBottom: isShowKeyBoard ? 80 : 73,
+              width: dimensions,
+            }}
+          >
+            <Text style={styles.formTitle}>Войти</Text>
+            <TextInput
+              style={styles.input}
+              value={state.email}
+              textAlign={"left"}
+              placeholder={"Адрес электронной почты"}
+              placeholderTextColor={"#BDBDBD"}
+              onFocus={() => setIsShowKeyBoard(true)}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, email: value }))
+              }
+            />
+            <TextInput
+              style={styles.input}
+              value={state.password}
+              textAlign={"left"}
+              placeholder={"Пароль"}
+              placeholderTextColor={"#BDBDBD"}
+              onFocus={() => setIsShowKeyBoard(true)}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
+              secureTextEntry={true}
+            />
+            <TouchableOpacity style={styles.button} onPress={keyboardHide}>
               <Text style={styles.btnText}>Войти</Text>
             </TouchableOpacity>
 
-              <TouchableOpacity style={styles.textForm} onPress={() => navigation.navigate("Registration")}>
-                <Text >Нет аккаунта? Зарегистрироваться</Text>
-              </TouchableOpacity>
-              </View>
-
-            </KeyboardAvoidingView>
-
-        </View>
+            <TouchableOpacity
+              style={styles.textForm}
+              onPress={() => navigation.navigate("Registration")}
+            >
+              <Text>Нет аккаунта? Зарегистрироваться</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
-  registrationFormContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    marginHorizontal: 20,
- 
-      
-  },
   imageBackground: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   keyboardContainer: {
     flex: 1,
-     
   },
-  form: {
-    
-  backgroundColor:'white',
-  },
+
   formTitle: {
     color: "#212121",
     fontSize: 30,
@@ -139,8 +126,12 @@ const styles = StyleSheet.create({
     fontFamily: "roboto",
   },
   formInput: {
-    justifyContent: 'center',
-    textAlign:'center'
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    paddingTop: 92,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    minWidth: 400,
   },
 
   input: {
@@ -171,10 +162,11 @@ const styles = StyleSheet.create({
     color: "#1B4371",
     textAlign: "center",
     marginBottom: 45,
-    alignSelf: 'center',
-    color: '#1B4371',
+    alignSelf: "center",
+    color: "#1B4371",
     fontWeight: 400,
-    fontSize:16,
+    fontSize: 16,
+    fontFamily: "roboto",
   },
 });
 

@@ -9,10 +9,10 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
-  // Dimensions,
+  Dimensions,
 
 } from "react-native";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { authSignUpUser } from "../redux/auth/authOperations";
@@ -26,22 +26,22 @@ const initialState = {
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [state, setState] = useState(initialState);
-  // const [dimensions, setDimensions] = useState(
-  //   Dimensions.get("window").width - 20 * 2
-  // );
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 20 * 2
+  );
 
   const dispath = useDispatch();
 
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 20 * 2;
-  //     setDimensions(width);
-  //   };
-  //   Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    // return () => {
+    //   Dimensions.removeEventListener("change", onChange);
+    // };
+  }, []);
 
   const keyboardHide = () => {
     setIsShowKeyBoard(false);
@@ -60,7 +60,6 @@ export const RegistrationScreen = ({ navigation }) => {
         style={styles.imageBackground}
         source={require("../assets/images/bgimage.png")}
       >
-        <View style={styles.registrationFormContainer}>
          
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -68,8 +67,8 @@ export const RegistrationScreen = ({ navigation }) => {
               <View
                 style={{
                   ...styles.formInput,
-                  marginBottom: isShowKeyBoard ? 23 : 43,
-                  // width: dimensions,
+                  paddingBottom: isShowKeyBoard ? 80 : 73,
+                  width: dimensions,
                 }}
               >
                 <Text style={styles.formTitle}>Регистрация</Text>
@@ -105,6 +104,7 @@ export const RegistrationScreen = ({ navigation }) => {
                   onChangeText={(value) =>
                     setState((prevState) => ({ ...prevState, password: value }))
                   }
+                   secureTextEntry={true}
                 />
                 <TouchableOpacity style={styles.button} onPress={keyboardHide}>
                   <Text style={styles.btnText}>Зарегистрироваться</Text>
@@ -115,29 +115,23 @@ export const RegistrationScreen = ({ navigation }) => {
 
               </View>
             </KeyboardAvoidingView>
-          
-        </View>
+
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
-  registrationFormContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-      marginHorizontal: 20,
-  },
+
   imageBackground: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center",
+      justifyContent: "flex-end",
+    alignItems: "center",
   },
   keyboardContainer: {
     flex: 1,
   },
-  form: {
-    backgroundColor: "white",
-  },
+
   formTitle: {
     color: "#212121",
     fontSize: 30,
@@ -146,8 +140,12 @@ const styles = StyleSheet.create({
     fontFamily: "roboto",
   },
   formInput: {
-       justifyContent: 'center',
-    textAlign:'center'
+  justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    paddingTop: 92,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    minWidth: 400,
   },
 
   input: {

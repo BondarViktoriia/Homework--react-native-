@@ -9,14 +9,14 @@ const PostsScreen = () => {
   return (
      <Stack.Navigator>
         <Stack.Screen
-          name="DefaultScreen"
-          component={DefaultScreen} />
+          name="Публикации"
+        component={DefaultScreen} />
         <Stack.Screen
           name='Map'
           component={MapScreen}
         />
         <Stack.Screen
-          name="Comments"
+          name="Комментарии"
           component={ComentsScreen}
         />
             </Stack.Navigator>
